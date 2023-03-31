@@ -3,7 +3,8 @@ defmodule Ueberauth.Strategy.Hubspot do
   Provides the strategy callbacks for hubspot
   """
 
-  use Ueberauth.Strategy
+  use Ueberauth.Strategy,
+    default_scope: "oauth"
 
   alias Ueberauth.Auth.{Credentials, Extra, Info}
   alias Ueberauth.Strategy.Hubspot
@@ -13,12 +14,12 @@ defmodule Ueberauth.Strategy.Hubspot do
   """
   @impl Ueberauth.Strategy
   def handle_request!(conn) do
+    scopes = conn.params["scope"] || option(conn, :default_scope)
+
     params =
-      []
-      |> with_optional(:scope, conn)
+      [scope: scopes]
       |> with_optional(:optional_scope, conn)
       |> with_optional(:state, conn)
-      |> with_param(:scope, conn)
       |> with_param(:optional_scope, conn)
       |> with_param(:state, conn)
       |> with_state_param(conn)
