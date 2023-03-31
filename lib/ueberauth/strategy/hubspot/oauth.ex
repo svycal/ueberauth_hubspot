@@ -3,8 +3,8 @@ defmodule Ueberauth.Strategy.Hubspot.OAuth do
   OAuth2 for Hubspot.
   Add `client_id` and `client_secret` to your configuration:
       config :ueberauth, Ueberauth.Strategy.Hubspot.OAuth,
-        client_id: System.get_env("SALESFORCE_APP_ID"),
-        client_secret: System.get_env("SALESFORCE_APP_SECRET")
+        client_id: System.get_env("HUBSPOT_APP_ID"),
+        client_secret: System.get_env("HUBSPOT_APP_SECRET")
   """
   use OAuth2.Strategy
 
