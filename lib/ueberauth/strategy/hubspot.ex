@@ -74,7 +74,7 @@ defmodule Ueberauth.Strategy.Hubspot do
   def extra(%{private: %{hs_info: info}}) do
     %Extra{
       raw_info: %{
-        hub_id: info["hub_id"]
+        hub_id: maybe_to_string(info["hub_id"])
       }
     }
   end
@@ -99,6 +99,9 @@ defmodule Ueberauth.Strategy.Hubspot do
   defp option(conn, key) do
     Keyword.get(options(conn), key, Keyword.get(default_options(), key))
   end
+
+  defp maybe_to_string(nil), do: nil
+  defp maybe_to_string(val), do: to_string(val)
 
   defp oauth_client_options_from_conn(conn) do
     base_options = [redirect_uri: callback_url(conn)]
