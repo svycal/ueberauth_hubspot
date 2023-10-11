@@ -136,7 +136,8 @@ defmodule Ueberauth.Strategy.Hubspot do
       {:ok, %OAuth2.Response{status_code: 401, body: _body}} ->
         set_errors!(conn, [error("token", "unauthorized")])
 
-      {:ok, %OAuth2.Response{status_code: status_code, body: body}} when status_code in 200..399 ->
+      {:ok, %OAuth2.Response{status_code: status_code, body: body}}
+      when status_code in 200..399 ->
         {:ok, body}
 
       {:error, %OAuth2.Error{reason: reason}} ->

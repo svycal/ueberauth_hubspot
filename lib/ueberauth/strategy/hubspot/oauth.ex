@@ -29,7 +29,6 @@ defmodule Ueberauth.Strategy.Hubspot.OAuth do
     |> OAuth2.Client.put_serializer("application/json", Ueberauth.json_library())
   end
 
-
   @impl OAuth2.Strategy
   def authorize_url(client, params) do
     OAuth2.Strategy.AuthCode.authorize_url(client, params)
@@ -51,7 +50,6 @@ defmodule Ueberauth.Strategy.Hubspot.OAuth do
     |> client
     |> OAuth2.Client.authorize_url!(params)
   end
-
 
   def get_access_token(params \\ [], opts \\ []) do
     case opts |> client |> OAuth2.Client.get_token(params) do
