@@ -58,6 +58,9 @@ defmodule Ueberauth.Strategy.Hubspot.OAuth do
       {:error, %{body: %{"error" => error, "error_description" => description}}} ->
         {:error, {error, description}}
 
+      {:error, %OAuth2.Error{reason: reason}} ->
+        {:error, {:oauth_error, reason}}
+
       {:ok, %{token: %{access_token: nil} = token}} ->
         %{"error" => error, "error_description" => description} = token.other_params
         {:error, {error, description}}
