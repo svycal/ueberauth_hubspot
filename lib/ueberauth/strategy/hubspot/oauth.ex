@@ -12,7 +12,7 @@ defmodule Ueberauth.Strategy.Hubspot.OAuth do
     strategy: __MODULE__,
     site: "https://app.hubspot.com",
     authorize_url: "/oauth/authorize",
-    token_url: "https://api.hubapi.com/oauth/v1/token"
+    token_url: "https://api.hubapi.com/oauth/2026-03/token"
   ]
 
   @doc """

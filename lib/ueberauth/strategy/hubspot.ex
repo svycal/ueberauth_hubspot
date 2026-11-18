@@ -128,10 +128,22 @@ defmodule Ueberauth.Strategy.Hubspot do
     end
   end
 
-  @base_url "https://api.hubapi.com/oauth/v1/access-tokens/"
+  @introspect_url "https://api.hubapi.com/oauth/2026-03/token/introspect"
   defp fetch_user(conn, %OAuth2.AccessToken{access_token: access_token}) do
-    Hubspot.OAuth.client()
-    |> OAuth2.Client.get(@base_url <> access_token)
+    client = Hubspot.OAuth.client()
+
+    params = [
+      token: access_token,
+      token_type_hint: "access_token",
+      client_id: client.client_id,
+      client_secret: client.client_secret
+    ]
+
+    client
+    |> OAuth2.Client.post(@introspect_url, params, [
+      {"Content-Type", "application/x-www-form-urlencoded"},
+      {"Accept", "application/json"}
+    ])
     |> then(fn
       {:ok, %OAuth2.Response{status_code: 401, body: _body}} ->
         set_errors!(conn, [error("token", "unauthorized")])
@@ -139,6 +151,9 @@ defmodule Ueberauth.Strategy.Hubspot do
       {:ok, %OAuth2.Response{status_code: status_code, body: body}}
       when status_code in 200..399 ->
         {:ok, body}
+
+      {:error, %OAuth2.Response{status_code: 406}} ->
+        set_errors!(conn, [error("token", "not acceptable")])
 
       {:error, %OAuth2.Error{reason: reason}} ->
         set_errors!(conn, [error("OAuth2", reason)])
