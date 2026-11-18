@@ -128,7 +128,7 @@ defmodule Ueberauth.Strategy.Hubspot do
     end
   end
 
-  @introspect_url "https://api.hubapi.com/oauth/2026-03/token/introspect"
+  @introspect_url "https://api.hubapi.com/oauth/2026-09/token/introspect"
   defp fetch_user(conn, %OAuth2.AccessToken{access_token: access_token}) do
     client = Hubspot.OAuth.client()
 
